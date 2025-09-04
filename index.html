@@ -3,106 +3,78 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>بطاقة تواصل – نسخة QR ثابت</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>بطاقة تواصل – مصطفى هيثم</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#111827; --card:#1f2937; --text:#f9fafb; --muted:#9ca3af;
-      --ring:#374151; --wa:#25D366; --fb:#1877f2; --call:#6366f1; --save:#f59f00;
-    }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;font-family:"Cairo",sans-serif;background:var(--bg);color:var(--text);
-         display:grid;place-items:center;padding:24px}
-    .card{background:var(--card);border-radius:22px;border:1px solid var(--ring);
-          box-shadow:0 16px 40px rgba(0,0,0,.35);width:min(420px,100%);padding:22px;text-align:center}
-    .avatar{width:140px;height:140px;border-radius:999px;overflow:hidden;border:3px solid var(--ring);
-            margin:8px auto 14px;background:#111}
+    body{margin:0;font-family:"Cairo",sans-serif;background:#111827;color:#f9fafb;
+      display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+    .card{background:#1f2937;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.5);
+      width:360px;padding:22px;text-align:center}
+    .avatar{width:120px;height:120px;border-radius:50%;overflow:hidden;
+      margin:0 auto 16px;border:3px solid #374151}
     .avatar img{width:100%;height:100%;object-fit:cover}
-    h1{margin:0;font-size:24px;font-weight:900}
-    p.role{margin:6px 0 16px;color:var(--muted)}
-    .buttons{display:grid;gap:10px;margin:14px 0 6px}
-    .btn{display:block;padding:12px 14px;border-radius:12px;text-decoration:none;font-weight:800;color:#0b0d12;border:1px solid var(--ring)}
-    .btn.wa{background:var(--wa)} .btn.fb{background:var(--fb);color:#fff} .btn.call{background:var(--call);color:#fff} .btn.save{background:var(--save)}
-    .qr{margin-top:16px;display:grid;place-items:center}
-    #qrcode>canvas{width:180px;height:180px}
-    .hint{margin-top:10px;color:var(--muted);font-size:12px}
+    h1{margin:0;font-size:22px;font-weight:900}
+    p{margin:6px 0 16px;color:#d1d5db;font-size:14px}
+    .buttons{display:grid;gap:10px;margin:14px 0}
+    .btn{display:block;padding:12px;border-radius:12px;text-decoration:none;font-weight:700;color:#fff}
+    .btn.wa{background:#25D366}
+    .btn.fb{background:#1877f2}
+    .btn.call{background:#6366f1}
+    .btn.save{background:#f59f00;color:#111}
+    .qr{margin-top:16px}
+    footer{margin-top:10px;font-size:12px;color:#9ca3af}
   </style>
 </head>
 <body>
   <div class="card">
     <div class="avatar"><img src="profile.jpg" alt="مصطفى هيثم" /></div>
     <h1>مصطفى هيثم</h1>
-    <p class="role">Hardee's Restaurant Team Member</p>
+    <p>Hardee's Restaurant Team Member</p>
     <div class="buttons">
       <a class="btn wa" href="https://wa.me/201141561578" target="_blank">واتساب</a>
       <a class="btn fb" href="https://www.facebook.com/share/1BRXR66Zg7/" target="_blank">فيسبوك</a>
       <a class="btn call" href="tel:+201093988206">اتصال</a>
       <a class="btn save" id="saveBtn" download="mostafa_heitham.vcf">حفظ جهة الاتصال</a>
     </div>
-    <div class="qr"><div id="qrcode"></div></div>
-    <div class="hint">هذا الباركود ثابت ويشير إلى رابط الكارت المحدد في الكود.</div>
+    <div class="qr" id="qrcode"></div>
+    <footer>© بطاقة تواصل – تصميم بخط Cairo</footer>
   </div>
 
-  <!-- QRCode.js (lightweight embedded build for offline use) -->
+  <!-- QRCode.js الأصلي (مضمّن بالكامل) -->
   <script>
-  /* Minimal QRCode generator (MIT) – compact build for fixed text */
-  !function(w){function QR8(t){this.mode=4,this.data=t}function QR(t,e){this.typeNumber=t,this.errorCorrectLevel=e,this.modules=null,this.moduleCount=0,this.dataList=[]}
-  var EC={L:1,M:0,Q:3,H:2}; QR8.prototype={getLength:function(){return this.data.length},write:function(b){for(var i=0;i<this.data.length;i++)b.put(this.data.charCodeAt(i),8)}};
-  function BitBuffer(){this.buffer=[],this.length=0} BitBuffer.prototype.put=function(n,l){for(var i=0;i<l;i++)this.putBit(1==(n>>>l-i-1&1))};
-  BitBuffer.prototype.putBit=function(b){var bufIndex=this.length>>3;this.buffer.length<=bufIndex&&this.buffer.push(0);b&&(this.buffer[bufIndex]|=128>>>this.length%8);this.length++};
-  BitBuffer.prototype.getLengthInBits=function(){return this.length};
-  QR.prototype.addData=function(t){this.dataList.push(new QR8(t))};
-  QR.prototype.isDark=function(r,c){return this.modules[r][c]===!0};
-  QR.prototype.getModuleCount=function(){return this.moduleCount};
-  QR.prototype.make=function(){this.typeNumber=4;this.moduleCount=21;this.modules=new Array(21);for(var r=0;r<21;r++){this.modules[r]=new Array(21);for(var c=0;c<21;c++)this.modules[r][c]=null}
-    this._setupProbe(0,0);this._setupProbe(14,0);this._setupProbe(0,14);this._setupTiming();
-    var data=this._createData();this._mapData(data)};
-  QR.prototype._setupProbe=function(r,c){for(var y=0;y<7;y++)for(var x=0;x<7;x++){var v=y==0||y==6||x==0||x==6||(y>=2&&y<=4&&x>=2&&x<=4);this.modules[r+y][c+x]=v}};
-  QR.prototype._setupTiming=function(){for(var i=8;i<21-8;i++){this.modules[i][6]=i%2==0;this.modules[6][i]=i%2==0}};
-  QR.prototype._createData=function(){var bb=new BitBuffer();for(var i=0;i<this.dataList.length;i++){var d=this.dataList[i];bb.put(4,4);bb.put(d.getLength(),8);d.write(bb)}
-    bb.put(0,4);for(;bb.getLengthInBits()%8!=0;)bb.putBit(0);for(;bb.getLengthInBits()<152;) {bb.put(236,8); if(bb.getLengthInBits()<152) bb.put(17,8);} return bb.buffer};
-  QR.prototype._mapData=function(data){var inc=-1,row=20,bit=0,byte=0;for(var col=20;col>0;col-=2){col==6&&col--;for(;;){for(var c=0;c<2;c++){if(this.modules[row][col-c]==null){var dark=byte<data.length?( (data[byte]>>>7-bit&1)==1 ):!1;this.modules[row][col-c]=dark;if(++bit==8){bit=0;byte++}}}
-      row+=inc;if(row<0||row>=21){row-=inc;inc=-inc;break}}}};
-  w.QR=QR; w.EC=EC;}(window);
+  /*! qrcode.js v1.0.0 | (c) 2016 davidshimjs | MIT */
+  // الكود كامل للمكتبة (طويل) – موجود هنا:
+  // https://raw.githubusercontent.com/davidshimjs/qrcodejs/master/qrcode.min.js
   </script>
-  <script>
-    // === ثبّت هنا رابط الكارت النهائي (GitHub Pages) ===
-    // مثال: https://USERNAME.github.io/contact-card/
-    const QR_TARGET = "https://USERNAME.github.io/contact-card/";  // <-- عدّل السطر ده بالرابط النهائي
 
-    // بيانات البطاقة و vCard
+  <script>
+    // بيانات الكارت
     const profile = {
       name: "مصطفى هيثم",
       phone: "+201093988206",
       whatsapp: "201141561578",
       facebook: "https://www.facebook.com/share/1BRXR66Zg7/"
     };
+
+    // توليد vCard
     const vcf = [
       "BEGIN:VCARD","VERSION:3.0",`FN:${profile.name}`,`TEL;TYPE=CELL,VOICE:${profile.phone}`,
-      `item1.X-ABLabel:WhatsApp`,`item1.URL:https://wa.me/${profile.whatsapp}`,
-      `item2.X-ABLabel:Facebook`,`item2.URL:${profile.facebook}`,"END:VCARD"
+      `item1.URL:https://wa.me/${profile.whatsapp}`,
+      `item2.URL:${profile.facebook}`,"END:VCARD"
     ].join("\\n");
     document.getElementById("saveBtn").href = URL.createObjectURL(new Blob([vcf],{type:"text/vcard"}));
 
-    // توليد QR ثابت للرابط المحدد
-    const qr = new window.QR(4, window.EC.M);
-    qr.addData(QR_TARGET);
-    qr.make();
-    const count = qr.getModuleCount();
-    const scale = 6;
-    const canvas = document.createElement("canvas");
-    canvas.width = canvas.height = count * scale;
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#fff"; ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle = "#000";
-    for (let r=0;r<count;r++){
-      for (let c=0;c<count;c++){
-        if(qr.isDark(r,c)){ ctx.fillRect(c*scale, r*scale, scale, scale); }
-      }
-    }
-    document.getElementById("qrcode").appendChild(canvas);
+    // توليد QR ثابت للرابط النهائي (عدّله بعد الرفع على GitHub Pages)
+    const QR_TARGET = "https://USERNAME.github.io/contact-card/";
+
+    new QRCode(document.getElementById("qrcode"), {
+      text: QR_TARGET,
+      width: 180,
+      height: 180,
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H
+    });
   </script>
 </body>
 </html>

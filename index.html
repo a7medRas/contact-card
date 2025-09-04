@@ -64,7 +64,7 @@
     document.getElementById("saveBtn").href = URL.createObjectURL(new Blob([vcf],{type:"text/vcard"}));
 
     // Fixed QR target (replace USERNAME with your GitHub username)
-    const QR_TARGET = "https://USERNAME.github.io/contact-card/";
+const QR_TARGET = "https://مصطفى-username.github.io/contact-card/";
     const qr = new QRCode(4, QRCode.QRErrorCorrectLevel.H);
     qr.addData(QR_TARGET);
     qr.make();
